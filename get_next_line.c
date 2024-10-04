@@ -6,16 +6,13 @@
 /*   By: nponchon <nponchon@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:45:51 by nponchon          #+#    #+#             */
-/*   Updated: 2024/10/04 21:13:42 by nponchon         ###   ########.fr       */
+/*   Updated: 2024/10/04 20:28:25 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*	This function splits the current buffer in two:
-	the string incl. the \n into buffer and the rest in the stash.
-	If no \n is found, it returns the full buffer.
-*/
+
 
 char	*ft_buffer_split(char *buffer, char *stash)
 {
