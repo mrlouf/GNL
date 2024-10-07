@@ -6,19 +6,19 @@
 /*   By: nponchon <nponchon@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:46:07 by nponchon          #+#    #+#             */
-/*   Updated: 2024/10/04 10:46:38 by nponchon         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:06:10 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
 	int	len;
-	
+
 	len = 0;
 	while (str[len])
-		len++;	
+		len++;
 	return (len);
 }
 
@@ -43,7 +43,7 @@ char	*ft_strjoin(char *dst, char *src)
 	char	*new;
 	int		i;
 	int		j;
-	
+
 	new = malloc(sizeof(char) * (ft_strlen(dst) + ft_strlen(src) + 1));
 	if (!new)
 		return (NULL);

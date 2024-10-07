@@ -1,2 +1,5 @@
 # ignore test .txt
+*.txt
 
+# ignore self
+.ignore
