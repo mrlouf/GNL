@@ -35,17 +35,22 @@ char	*get_next_line(int fd)
 	static char	stash[BUFFER_SIZE];
 	char		*buffer;
 	char		*line;
+	int			bytes;
 
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
 	line = "";
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		free(buffer);
 	buffer[BUFFER_SIZE] = '\0';
-	while (read(fd, buffer, BUFFER_SIZE) != 0)
+	bytes = read(fd, buffer, BUFFER_SIZE);
+	while (bytes > 0)
 	{
-		if (ft_strchr(buffer, '\n') != NULL)
+		if (ft_strchr(stash, '\n') != NULL)
 			return (ft_strjoin(line, ft_buffer_split(buffer, stash)));
 		line = ft_strjoin(line, ft_buffer_split(buffer, stash));
+		bytes = read(fd, buffer, BUFFER_SIZE);
 	}
 	/*		TODO
 	 * - in case of error or EOF, return NULL
