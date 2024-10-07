@@ -28,6 +28,10 @@ char	*ft_read_buffer(int fd, char *stash, char *buffer)
 		else if (bytes == 0)
 			break ;
 		buffer[bytes] = '\0';
+		if (!stash)
+			stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
 		stash = ft_strjoin(stash, buffer);
 		if (!stash)
 			return (NULL);
@@ -42,6 +46,8 @@ char	*ft_fill_line(char *stash)
 	int	i;
 
 	i = 0;
+	if (!stash)
+	  return (NULL);
 	while (stash[i] != '\n' && stash[i])
 		i++;
 	return (ft_substr(stash, 0, i + 1));
@@ -73,17 +79,14 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buf;
 
-	line = NULL;
-	if (!stash)
-		stash = ft_strdup("");
-	if (!stash)
-		return (NULL);
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE < 1)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
 	stash = ft_read_buffer(fd, stash, buf);
+	if (!stash)
+	  return (NULL);
 	free(buf);
 	line = ft_fill_line(stash);
 	if (!line)
