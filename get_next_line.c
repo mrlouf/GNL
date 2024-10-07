@@ -12,51 +12,85 @@
 
 #include "get_next_line.h"
 
+char *ft_read_buffer(int fd, char *stash)
+{
+	char *buffer;
+	int	bytes;
+	
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	bytes = 1;
+	if (!stash)
+		stash = ft_strdup("");
+	if (!stash)
+		return (NULL);
+	while (bytes > 0)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes < 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[bytes] = '\0';
+		stash = ft_strjoin(stash, buffer);
+		if (!stash)
+			return (NULL);
+		if (ft_strchr(buffer, '\n') != NULL)
+			break ;
+	}
+	free(buffer);
+	return (stash);
+}
 
-
-char	*ft_buffer_split(char *buffer, char *stash)
+char *ft_fill_line(char *line, char *stash)
 {
 	int	i;
+	
+	i = 0;
+	while (stash[i] != '\n' && stash[i])
+		i++;
+	line = ft_substr(stash, 0, i + 1);
+	if (!line)
+		return (NULL);
+	return (line);
+}
 
-	i = -1;
-	while (++i < BUFFER_SIZE)
+char *ft_new_stash(char *stash)
+{
+	int	i;
+	char *new_stash;
+	
+	i = 0;
+	while (stash[i] != '\n' && stash[i])
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	new_stash = ft_substr(stash, i, ft_strlen(stash) - i);
+	if (!new_stash)
 	{
-		if (buffer[i] == '\n')
-		{
-			stash = ft_substr(buffer, i + 1, BUFFER_SIZE - (i + 1));
-			return (buffer = ft_substr(buffer, 0, i + 1));
-		}
+		free(stash);
+		return (NULL);
 	}
-	return (buffer);
+	free(stash);
+	return (new_stash);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE];
-	char		*buffer;
+	static char	*stash;
 	char		*line;
-	int			bytes;
 
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	line = "";
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		free(buffer);
-	buffer[BUFFER_SIZE] = '\0';
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	while (bytes > 0)
+	stash = ft_read_buffer(fd, stash);
+	line = ft_fill_line(line, stash);
+	if (!line)
 	{
-		if (ft_strchr(stash, '\n') != NULL)
-			return (ft_strjoin(line, ft_buffer_split(buffer, stash)));
-		line = ft_strjoin(line, ft_buffer_split(buffer, stash));
-		bytes = read(fd, buffer, BUFFER_SIZE);
+		free(stash);
+		return (NULL);
 	}
-	/*		TODO
-	 * - in case of error or EOF, return NULL
-	 * - what happens if the document is empty? incorrect? full of \n?
-	 */
-	free(buffer);
+	stash = ft_new_stash(stash);
 	return (line);
 }
 
@@ -66,22 +100,20 @@ int	main(void)
 {
 	int		fd;
 	char	*path;
+	char	*line;
 
 	path = "test.txt";
 	fd = open(path, O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(fd));
+	free(line);
+	close(fd);
 	return (0);
-
-	/*	TODO
-	 * - the main receives and prints every stash returned by
-	 *   get next line until it returns 0, indicating the EOF.
-	 */
 }
