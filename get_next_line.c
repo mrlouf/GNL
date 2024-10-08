@@ -12,10 +12,10 @@
 
 #include "get_next_line.h"
 
-char	*ft_free(char *stash)
+char	*ft_free(char **stash)
 {
-	free(stash);
-	stash = NULL;
+	free(*stash);
+	*stash = NULL;
 	return (NULL);
 }
 
@@ -31,7 +31,7 @@ char	*ft_read_buffer(int fd, char *stash, char *buffer)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1)
-			return (ft_free(stash));
+			return (ft_free(&stash));
 		else if (bytes == 0)
 			break ;
 		buffer[bytes] = '\0';
@@ -114,7 +114,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
-		return (ft_free(stash));
+		return (ft_free(&stash));
 	stash = ft_read_buffer(fd, stash, buf);
 	if (!stash)
 	{
@@ -124,7 +124,7 @@ char	*get_next_line(int fd)
 	free(buf);
 	line = ft_fill_line(stash);
 	if (!line)
-		return (ft_free(stash));
+		return (ft_free(&stash));
 	stash = ft_new_stash(stash);
 	return (line);
 }

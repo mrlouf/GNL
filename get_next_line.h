@@ -23,7 +23,7 @@
 // GET NEXT LINE
 
 char	*get_next_line(int fd);
-char	*ft_free(char *stash);
+char	*ft_free(char **stash);
 char	*ft_fill_line(char *stash);
 char	*ft_read_buffer(int fd, char *stash, char *buffer);
 
