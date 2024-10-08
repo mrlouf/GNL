@@ -106,11 +106,11 @@ char	*ft_new_stash(char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[FOPEN_MAX];
+	static char	*stash[10000];
 	char		*line;
 	char		*buf;
 
-	if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE < 1)
+	if (fd < 0 || fd > 10000 || BUFFER_SIZE < 1)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)

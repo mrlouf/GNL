@@ -89,12 +89,9 @@ char	*ft_new_stash(char *stash)
 	if (stash[i] == '\n')
 		i++;
 	new_stash = ft_substr(stash, i, ft_strlen(stash) - i);
-	if (!new_stash)
-	{
-		free(stash);
+	ft_free(&stash);
+	if (!new_stash)	
 		return (NULL);
-	}
-	free(stash);
 	return (new_stash);
 }
 
