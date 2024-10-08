@@ -111,7 +111,7 @@ char	*get_next_line(int fd)
 	char		*buf;
 
 	if (fd < 0 || fd > 10000 || BUFFER_SIZE < 1)
-		return (NULL);
+		return (ft_free(&stash[fd]));
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (ft_free(&stash[fd]));

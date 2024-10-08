@@ -90,7 +90,7 @@ char	*ft_new_stash(char *stash)
 		i++;
 	new_stash = ft_substr(stash, i, ft_strlen(stash) - i);
 	ft_free(&stash);
-	if (!new_stash)	
+	if (!new_stash)
 		return (NULL);
 	return (new_stash);
 }
@@ -108,17 +108,14 @@ char	*get_next_line(int fd)
 	char		*buf;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
+		return (ft_free(&stash));
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (ft_free(&stash));
 	stash = ft_read_buffer(fd, stash, buf);
-	if (!stash)
-	{
-		free(buf);
-		return (NULL);
-	}
 	free(buf);
+	if (!stash)
+		return (NULL);
 	line = ft_fill_line(stash);
 	if (!line)
 		return (ft_free(&stash));
@@ -133,11 +130,15 @@ int	main(void)
 	int		fd;
 	char	*path;
 	char	*line;
+	int i = 0;
 
-	path = "test4.txt";
+	path = "test.txt";
 	fd = open(path, O_RDONLY);
-       	printf("%s", line = get_next_line(fd));
-	free(line);
+       	while (i++ < 4)
+       	{
+       	  printf("%s", line = get_next_line(fd));
+	  free(line);
+	}
 	close(fd);
 	return (0);
 }*/
