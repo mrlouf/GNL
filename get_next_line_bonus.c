@@ -63,7 +63,9 @@ char	*ft_fill_line(char *stash)
 		return (NULL);
 	while (stash[i] != '\n' && stash[i])
 		i++;
-	line = ft_substr(stash, 0, i + 1);
+	if (stash[i] == '\n')
+		i++;
+	line = ft_substr(stash, 0, i);
 	if (*line == '\0')
 	{
 		free(line);
@@ -131,12 +133,14 @@ char	*get_next_line(int fd)
 #include <fcntl.h>
 int	main(void)
 {
-	int		f1;
-	int		f2;
+	int		f1 = open("test1.txt", O_RDONLY);
+	int		f2 = open("test2.txt", O_RDONLY);
+	int		f3 = open("test3.txt", O_RDONLY);;
+	int		f4 = open("test4.txt", O_RDONLY);;
+	int		f5 = open("test5.txt", O_RDONLY);;
+	int		f6 = open("test6.txt", O_RDONLY);;
 	char	*line;
 
-	f1 = open("test1.txt", O_RDONLY);
-	f2 = open("test2.txt", O_RDONLY);
 	printf("%s", line = get_next_line(f1));
 	free(line);
 	printf("%s", line = get_next_line(f2));

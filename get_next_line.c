@@ -63,7 +63,9 @@ char	*ft_fill_line(char *stash)
 		return (NULL);
 	while (stash[i] != '\n' && stash[i])
 		i++;
-	line = ft_substr(stash, 0, i + 1);
+	if (stash[i] == '\n')
+		i++;
+	line = ft_substr(stash, 0, i);
 	if (*line == '\0')
 	{
 		free(line);
@@ -135,24 +137,10 @@ int	main(void)
 	char	*path;
 	char	*line;
 
-	path = "test.txt";
+	path = "test4.txt";
 	fd = open(path, O_RDONLY);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
-	free(line);
-	printf("%s", line = get_next_line(fd));
+       	printf("%s", line = get_next_line(fd));
 	free(line);
 	close(fd);
 	return (0);
-}*/	
+}*/
