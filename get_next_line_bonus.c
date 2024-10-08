@@ -24,10 +24,7 @@ char	*ft_read_buffer(int fd, char *stash, char *buffer)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1)
-		{
-			free(buffer);
 			return (NULL);
-		}
 		else if (bytes == 0)
 			break ;
 		buffer[bytes] = '\0';
@@ -111,7 +108,10 @@ char	*get_next_line(int fd)
 		return (0);
 	stash[fd] = ft_read_buffer(fd, stash[fd], buf);
 	if (!stash[fd])
+	{
+		free(buf);
 		return (NULL);
+	}
 	free(buf);
 	line = ft_fill_line(stash[fd]);
 	if (!line)
@@ -122,7 +122,7 @@ char	*get_next_line(int fd)
 	stash[fd] = ft_new_stash(stash[fd]);
 	return (line);
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 int	main(void)
@@ -152,4 +152,4 @@ int	main(void)
 	close(f1);
 	close(f2);
 	return (0);
-}
+}*/

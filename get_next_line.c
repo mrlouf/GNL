@@ -24,10 +24,7 @@ char	*ft_read_buffer(int fd, char *stash, char *buffer)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1)
-		{
-			free(buffer);
 			return (NULL);
-		}
 		else if (bytes == 0)
 			break ;
 		buffer[bytes] = '\0';
@@ -104,14 +101,18 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buf;
 
-	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
 	stash = ft_read_buffer(fd, stash, buf);
 	if (!stash)
+	{
+		free(stash);
+		free(buf);
 		return (NULL);
+	}
 	free(buf);
 	line = ft_fill_line(stash);
 	if (!line)
