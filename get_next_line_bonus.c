@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nponchon <nponchon@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/04 10:45:51 by nponchon          #+#    #+#             */
-/*   Updated: 2024/10/08 13:10:29 by nponchon         ###   ########.fr       */
+/*   Created: 2024/10/08 13:28:51 by nponchon          #+#    #+#             */
+/*   Updated: 2024/10/08 13:29:17 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 /*	This function uses the function read() to try and read BUFFER_SIZE-number
 	of bytes that will be stored in buffer.	*/
@@ -100,55 +100,56 @@ char	*ft_new_stash(char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[FOPEN_MAX];
 	char		*line;
 	char		*buf;
 
-	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE < 1)
+	if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE < 1)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
-	stash = ft_read_buffer(fd, stash, buf);
-	if (!stash)
+	stash[fd] = ft_read_buffer(fd, stash[fd], buf);
+	if (!stash[fd])
 		return (NULL);
 	free(buf);
-	line = ft_fill_line(stash);
+	line = ft_fill_line(stash[fd]);
 	if (!line)
 	{
-		free(stash);
+		free(stash[fd]);
 		return (NULL);
 	}
-	stash = ft_new_stash(stash);
+	stash[fd] = ft_new_stash(stash[fd]);
 	return (line);
 }
-/*
+
 #include <stdio.h>
 #include <fcntl.h>
 int	main(void)
 {
-	int		fd;
-	char	*path;
+	int		f1;
+	int		f2;
 	char	*line;
 
-	path = "test.txt";
-	fd = open(path, O_RDONLY);
-	printf("%s", line = get_next_line(fd));
+	f1 = open("test1.txt", O_RDONLY);
+	f2 = open("test2.txt", O_RDONLY);
+	printf("%s", line = get_next_line(f1));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f2));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f1));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f2));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f1));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f2));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f1));
 	free(line);
-	printf("%s", line = get_next_line(fd));
+	printf("%s", line = get_next_line(f2));
 	free(line);
-	close(fd);
+	close(f1);
+	close(f2);
 	return (0);
-}*/
+}
